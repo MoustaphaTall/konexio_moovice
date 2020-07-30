@@ -9,6 +9,8 @@ class PopularBattle extends Component {
             movies: [],
             currentPage: 1
         }
+
+        this.onCardClick = this.onCardClick.bind(this);
     }
 
     componentDidMount() {
@@ -30,18 +32,34 @@ class PopularBattle extends Component {
             });            
     }
 
+    onCardClick(movieID) {
+        const { currentPage } = this.state;
+        this.setState({ 
+            currentPage: this.state.currentPage + 1 
+        });              
+    }
+
     renderCards() {
-        const { movies } = this.state;        
+        let { movies, currentPage } = this.state;
+        const cardsPerPage = 2;
+        const lastCardIndex = currentPage * cardsPerPage;
+        const firstCardIndex = lastCardIndex - cardsPerPage;
+        const currentCards = movies.slice(firstCardIndex, lastCardIndex);
 
         if (movies.length === 0) {
             return <h2>Loading…</h2>
         }
 
-        return movies.map((movie, index) => {
+        if (currentCards.length === 0) {
+            return <h2>No movies remaining! Check My List to see those you have selected.</h2>
+        }
+
+        return currentCards.map((movie, index) => {
             return (
                 <Card 
                     name={movie.name}
-                    description={movie.description} 
+                    description={movie.description}
+                    onClick={this.onCardClick}
                     src={movie.src}
                     key={index}
                 />
@@ -53,7 +71,7 @@ class PopularBattle extends Component {
         return (
             <div>
                 <div className="container">
-                    <div className="row">                        
+                    <div className="row justify-content-center">                        
                         {this.renderCards()}
                     </div>
                 </div>                
