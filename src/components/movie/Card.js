@@ -5,7 +5,7 @@ import "./Card.css";
 
 class Card extends Component {    
     render() {
-        const { name, description, src, onClick } = this.props;
+        const { name, description, src, onClick, movieID } = this.props;
         return (
             <div className="col-6 col-lg-4">
                 <div className="card" onClick={onClick}>

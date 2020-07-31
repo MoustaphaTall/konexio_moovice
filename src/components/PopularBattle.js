@@ -7,7 +7,8 @@ class PopularBattle extends Component {
 
         this.state = {
             movies: [],
-            currentPage: 1
+            currentPage: 1,
+            idList: []
         }
 
         this.onCardClick = this.onCardClick.bind(this);
@@ -24,7 +25,8 @@ class PopularBattle extends Component {
                 films.map(movie => movies.push({
                     name: movie.title, 
                     description: movie.overview, 
-                    src: movie.poster_path
+                    src: movie.poster_path,
+                    movieID: movie.id
                 }));
 
                 this.setState({ movies });
@@ -33,10 +35,20 @@ class PopularBattle extends Component {
     }
 
     onCardClick(movieID) {
-        const { currentPage } = this.state;
+        this.saveToLocalStorage(movieID);
         this.setState({ 
             currentPage: this.state.currentPage + 1 
         });              
+    }
+
+    saveToLocalStorage(movieID) {
+        const { idList } = this.state;
+        if (idList.indexOf(movieID) > -1) {
+            return;
+        }
+        idList.push(movieID);
+        // this.setState({ idList });
+        localStorage.setItem("my-list", JSON.stringify(idList));
     }
 
     renderCards() {
@@ -59,8 +71,9 @@ class PopularBattle extends Component {
                 <Card 
                     name={movie.name}
                     description={movie.description}
-                    onClick={this.onCardClick}
+                    onClick={() => this.onCardClick(movie.movieID)}
                     src={movie.src}
+                    movieID={movie.movieID}
                     key={index}
                 />
             );
@@ -68,6 +81,7 @@ class PopularBattle extends Component {
     }
 
     render() {
+        console.log("localStorage", JSON.parse(localStorage.getItem("my-list")));
         return (
             <div>
                 <div className="container">
