@@ -17,16 +17,15 @@ class Popular extends Component {
         fetch(url)
             .then(result => result.json())
             .then(json => json.results)
-            .then(films => {
-                films.map(movie => movies.push({
+            .then(json => {
+                movies = json.map(movie => ({ 
                     name: movie.title, 
                     description: movie.overview, 
-                    src: movie.poster_path
+                    src: movie.poster_path 
                 }));
 
-                this.setState({ movies });
-                return;
-            });            
+                this.setState({movies});
+            });
     }
 
     renderCards() {
@@ -49,8 +48,8 @@ class Popular extends Component {
     }
 
 
-    render() {   
-        // console.log(this.state.movies.map(movie => console.log(movie)));
+    render() {           
+        // console.log(this.state.movies);
         return (
             <div>
                 <div className="container">

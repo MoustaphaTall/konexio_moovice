@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import Card from './movie/Card';
 
 class PopularBattle extends Component {
-    constructor(props) {
+    constructor(props) {        
         super(props);
 
         this.state = {
             movies: [],
-            currentPage: 1,
-            idList: []
+            currentPage: 1,            
         }
 
         this.onCardClick = this.onCardClick.bind(this);
@@ -41,14 +40,15 @@ class PopularBattle extends Component {
         });              
     }
 
-    saveToLocalStorage(movieID) {
-        const { idList } = this.state;
-        if (idList.indexOf(movieID) > -1) {
+    saveToLocalStorage(movieID) {        
+        const currentList = JSON.parse(localStorage.getItem("my-list")) || [];
+        const updatedList = [ ...currentList, movieID ];        
+
+        if (currentList.includes(movieID)) {
             return;
-        }
-        idList.push(movieID);
-        // this.setState({ idList });
-        localStorage.setItem("my-list", JSON.stringify(idList));
+        }        
+        
+        localStorage.setItem("my-list", JSON.stringify(updatedList));
     }
 
     renderCards() {
@@ -80,8 +80,8 @@ class PopularBattle extends Component {
         });
     }
 
-    render() {
-        console.log("localStorage", JSON.parse(localStorage.getItem("my-list")));
+    render() {        
+        // console.log("localStorage", JSON.parse(localStorage.getItem("my-list")));        
         return (
             <div>
                 <div className="container">
