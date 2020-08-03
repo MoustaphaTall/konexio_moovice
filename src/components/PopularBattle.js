@@ -20,16 +20,15 @@ class PopularBattle extends Component {
         fetch(url)
             .then(result => result.json())
             .then(json => json.results)
-            .then(films => {
-                films.map(movie => movies.push({
+            .then(json => {
+                movies = json.map(movie => ({ 
                     name: movie.title, 
                     description: movie.overview, 
                     src: movie.poster_path,
                     movieID: movie.id
-                }));
-
-                this.setState({ movies });
-                return;
+                }));            
+                
+                this.setState({ movies });                
             });            
     }
 
@@ -66,22 +65,18 @@ class PopularBattle extends Component {
             return <h2>No movies remaining! Check My List to see those you have selected.</h2>
         }
 
-        return currentCards.map((movie, index) => {
+        return currentCards.map((movie) => {
             return (
                 <Card 
-                    name={movie.name}
-                    description={movie.description}
-                    onClick={() => this.onCardClick(movie.movieID)}
-                    src={movie.src}
-                    movieID={movie.movieID}
-                    key={index}
+                    {...movie}
+                    onClick={() => this.onCardClick(movie.movieID)}                    
+                    key={movie.movieID}
                 />
             );
         });
     }
 
-    render() {        
-        // console.log("localStorage", JSON.parse(localStorage.getItem("my-list")));        
+    render() {                       
         return (
             <div>
                 <div className="container">

@@ -21,7 +21,8 @@ class Popular extends Component {
                 movies = json.map(movie => ({ 
                     name: movie.title, 
                     description: movie.overview, 
-                    src: movie.poster_path 
+                    src: movie.poster_path,
+                    movieID: movie.id 
                 }));
 
                 this.setState({movies});
@@ -35,13 +36,11 @@ class Popular extends Component {
             return <h2>Loading…</h2>
         }
 
-        return movies.map((movie, index) => {
+        return movies.map(movie => {
             return (
                 <Card 
-                    name={movie.name}
-                    description={movie.description} 
-                    src={movie.src}
-                    key={index}
+                    {...movie}
+                    key={movie.movieID}
                 />
             );
         });

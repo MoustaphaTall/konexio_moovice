@@ -17,7 +17,7 @@ class App extends Component {
           <nav>
             <ul>
               <li><Link to="/">This week</Link></li>
-              <li><Link to="/battle/">This week battle</Link></li>
+              <li><Link to="/discover-battle/">This week battle</Link></li>
               <li><Link to="/popular/">Popular</Link></li>
               <li><Link to="/popular-battle/">Popular Battle</Link></li>
               <li><Link to="/my-list/">My List</Link></li>
@@ -27,7 +27,7 @@ class App extends Component {
           <Switch>
             <Route path="/popular-battle"><PopularBattle /></Route>
             <Route path="/my-list/"><MyList /></Route>
-            <Route path="/battle/"><DiscoverBattle /></Route>
+            <Route path="/discover-battle/"><DiscoverBattle /></Route>
             <Route path="/popular/"><Popular /></Route>
             <Route path="/"><Discover /></Route>
           </Switch>
