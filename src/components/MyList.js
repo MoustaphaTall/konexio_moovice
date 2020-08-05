@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Card from './movie/Card';
+import Api from '../utils/Api';
 
 class MyList extends Component {
     constructor(props) {
@@ -12,23 +13,22 @@ class MyList extends Component {
     }
 
     componentDidMount() {     
-        let { movieIds, movies } = this.state;   
-        const fetchMovie = iD => {
-            return fetch(`http://api.themoviedb.org/3/movie/${iD}?api_key=f1eb893bc12d8a9983bfa29357769a56`)
-                .then(result => result.json())                                
-                .then(json => ({
-                    name: json.title,
-                    description: json.overview,
-                    src: json.poster_path,
-                    movieID: json.id
-            }));
-        };
+        let { movieIds, movies } = this.state;
 
         if (movieIds !== null) {
-            const promises = movieIds.map(iD => fetchMovie(iD));
+            const promises = movieIds.map(iD => Api.getMovie(iD));
             // console.log(promises);
             Promise.all(promises)
-                .then(movies => this.setState({ movies }) );   
+                .then(json => {
+                    movies = json.map(movie => ({ 
+                        name: movie.title, 
+                        description: movie.overview, 
+                        src: movie.poster_path,
+                        movieID: movie.id 
+                    }));
+                    
+                    this.setState({ movies })
+                } );   
         }
     }
 
@@ -62,7 +62,7 @@ class MyList extends Component {
             <div className="container">
                 <div className="row">
                     <div className="col-12 text-center">
-                    <h2>My List</h2>
+                        <h2>My List</h2>
                     </div>
                 </div>
                 <div className="row justify-content-center">

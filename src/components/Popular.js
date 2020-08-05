@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Card from './movie/Card';
+import Api from '../utils/Api';
 
 class Popular extends Component {
     constructor(props) {
@@ -11,12 +12,8 @@ class Popular extends Component {
     }
 
     componentDidMount() {
-        let { movies } = this.state;        
-        const url = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=f1eb893bc12d8a9983bfa29357769a56"
-
-        fetch(url)
-            .then(result => result.json())
-            .then(json => json.results)
+        let { movies } = this.state;
+        Api.getPopularMovies()
             .then(json => {
                 movies = json.map(movie => ({ 
                     name: movie.title, 
@@ -52,6 +49,11 @@ class Popular extends Component {
         return (
             <div>
                 <div className="container">
+                    <div className="row">
+                        <div className="col-12 text-center">
+                            <h2>Popular</h2>
+                        </div>
+                    </div>
                     <div className="row">                        
                         {this.renderCards()}
                     </div>

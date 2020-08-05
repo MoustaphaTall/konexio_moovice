@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Card from './movie/Card';
+import Api from '../utils/Api';
+import LocalStorage from '../utils/LocalStorage';
 
 class PopularBattle extends Component {
     constructor(props) {        
@@ -14,12 +16,9 @@ class PopularBattle extends Component {
     }
 
     componentDidMount() {
-        let { movies } = this.state;        
-        const url = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=f1eb893bc12d8a9983bfa29357769a56"
+        let { movies } = this.state;  
 
-        fetch(url)
-            .then(result => result.json())
-            .then(json => json.results)
+        Api.getPopularMovies()
             .then(json => {
                 movies = json.map(movie => ({ 
                     name: movie.title, 
@@ -33,21 +32,10 @@ class PopularBattle extends Component {
     }
 
     onCardClick(movieID) {
-        this.saveToLocalStorage(movieID);
+        LocalStorage.save('my-list', movieID);
         this.setState({ 
             currentPage: this.state.currentPage + 1 
         });              
-    }
-
-    saveToLocalStorage(movieID) {        
-        const currentList = JSON.parse(localStorage.getItem("my-list")) || [];
-        const updatedList = [ ...currentList, movieID ];        
-
-        if (currentList.includes(movieID)) {
-            return;
-        }        
-        
-        localStorage.setItem("my-list", JSON.stringify(updatedList));
     }
 
     renderCards() {
@@ -80,6 +68,11 @@ class PopularBattle extends Component {
         return (
             <div>
                 <div className="container">
+                    <div className="row">
+                        <div className="col-12 text-center">
+                            <h2>Popular's battle</h2>
+                        </div>
+                    </div>
                     <div className="row justify-content-center">                        
                         {this.renderCards()}
                     </div>

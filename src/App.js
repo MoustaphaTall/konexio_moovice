@@ -14,13 +14,13 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <nav>
-            <ul>
-              <li><Link to="/">This week</Link></li>
-              <li><Link to="/discover-battle/">This week battle</Link></li>
-              <li><Link to="/popular/">Popular</Link></li>
-              <li><Link to="/popular-battle/">Popular Battle</Link></li>
-              <li><Link to="/my-list/">My List</Link></li>
+          <nav className="navbar navbar-expand navbar-dark bg-dark">
+            <ul className="navbar-nav">
+              <li className="nav-item"><Link className="nav-link" to="/">This week</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/discover-battle/">This week battle</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/popular/">Popular</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/popular-battle/">Popular Battle</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/my-list/">My List</Link></li>
             </ul>
           </nav>
 

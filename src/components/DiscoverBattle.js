@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Card from './movie/Card';
-import moment from 'moment';
-
+import Api from '../utils/Api';
+import LocalStorage from '../utils/LocalStorage';
 
 class DiscoverBattle extends Component {
     constructor(props) {
@@ -15,13 +15,7 @@ class DiscoverBattle extends Component {
 
     componentDidMount() {
         let { movies } = this.state;  
-        const today = moment().format('YYYY-MM-DD');
-        const nextWeek = moment().add(1, "weeks").format('YYYY-MM-DD');        
-        const url = `http://api.themoviedb.org/3/discover/movie?primary_release_date.gte=${today}&primary_release_date.lte=${nextWeek}&api_key=f1eb893bc12d8a9983bfa29357769a56`;
-
-        fetch(url)
-            .then(result => result.json())
-            .then(json => json.results)
+        Api.getLatestMovies()
             .then(json => {
                 movies = json.map(movie => ({ 
                     name: movie.title, 
@@ -34,24 +28,13 @@ class DiscoverBattle extends Component {
             });
     }
 
-    onCardClick(movieID) {
-        this.saveToLocalStorage(movieID);
+    onCardClick(movieID) {        
+        LocalStorage.save("my-list", movieID);
         this.setState({ 
             currentPage: this.state.currentPage + 1 
         });              
     }
-
-    saveToLocalStorage(movieID) {        
-        const currentList = JSON.parse(localStorage.getItem("my-list")) || [];
-        const updatedList = [ ...currentList, movieID ];        
-
-        if (currentList.includes(movieID)) {
-            return;
-        }        
-        
-        localStorage.setItem("my-list", JSON.stringify(updatedList));
-    }
-
+    
     renderCards() {
         let { movies, currentPage } = this.state;
         const cardsPerPage = 2;
@@ -79,10 +62,15 @@ class DiscoverBattle extends Component {
     }
 
 
-    render() {                              
+    render() {        
         return (
             <div>
                 <div className="container">
+                    <div className="row">
+                        <div className="col-12 text-center">
+                            <h2>This week's battle</h2>
+                        </div>
+                    </div>
                     <div className="row justify-content-center">                        
                         {this.renderCards()}
                     </div>
